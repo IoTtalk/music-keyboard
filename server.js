@@ -4,7 +4,15 @@ var express = require("express"),
 	server = require('http').createServer(app),
 	serv_io = require('socket.io')(server);
 
+
 app.use(express.static("./webapp"));
+
+app.get("/",function(req,res){
+	res.sendFile(__dirname+'/webapp/html/index.html');
+});
+
+
+
 server.listen((process.env.PORT || 5566));
 
 
