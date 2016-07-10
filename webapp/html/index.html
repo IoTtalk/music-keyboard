@@ -25,11 +25,14 @@
  
                 setTimeout(function(){
                     $("#sound_laugh")[0].currentTime = 0;
-                    $("#sound_laugh")[0].src = "../resources/scale/A+.mp3"
-                    $("#sound_laugh")[0].play();
                     $("#sound_laugh")[0].src = "../resources/scale/F+.mp3"
                     $("#sound_laugh")[0].play();
                 }, 1000);
+                 setTimeout(function(){
+                    $("#sound_laugh")[0].currentTime = 0;
+                    $("#sound_laugh")[0].src = "../resources/scale/G+.mp3"
+                    $("#sound_laugh")[0].play();
+                }, 3000);
             }
     </script>
 
