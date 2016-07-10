@@ -1,11 +1,12 @@
 <html>
   <head>
     <script src="../js/socket_io.js"></script>
-    
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
   <body>
     <script>
-      var A = new Audio('../resources/scale/D+.mp3');
-      A.play();
+      // var A = new Audio('../resources/scale/D+.mp3');
+      // A.play();
 
 
       var room = 'red';
@@ -14,8 +15,17 @@
       socket.on("message", function(data) {
         console.log("message:", data); 
       });
-
+      $(document).ready(function() {
+          $("#sound_laugh")[0].play();
+      });
+ 
     </script>
+
   </head>
+
+     <audio id="sound_laugh" preload="auto" controls="controls">
+      <source src="../resources/scale/D+.mp3">
+    </audio>
+ 
   </body>
 </html>
