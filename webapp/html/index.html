@@ -1,56 +1,82 @@
 <html>
   <head>
-    <script src="../js/socket_io.js"></script>
-     <script src="../js/jquery-2.1.4.js"></script>
-     <link href="../css/semantic.css" rel="stylesheet" type="text/css">
+    <script src="../js/socket_io.js" type="text/javascript"></script>
+    <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="../js/semantic.js" type="text/javascript"></script>
+    <link href="../css/semantic.css" rel="stylesheet" type="text/css">
+
   <body>
+    <style type="text/css">
+      #siri9{
+          position:fixed;
+          top: 50%;
+          left: 50%;
+          width:30em;
+          height:18em;
+          margin-top: -9em; /*set to a negative number 1/2 of your height*/
+          margin-left: -15em; /*set to a negative number 1/2 of your width*/
+          width: 518px;
+          height: 80px;
+      }
+    </style>
     <script>
-      // var A = new Audio('../resources/scale/D+.mp3');
-      // A.play();
-
-
-      var room = 'red';
       var socket = io.connect();
-      socket.emit("join", room);
-      socket.on("message", function(data) {
-        console.log("message:", data); 
-      });
+      var dir = '../resources/scale/';
+      var room = -1;
+      var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
+     
       $(document).ready(function() {
-          $("#sound_laugh")[0].play();
+     
+          socket.on("command", function(cmd) {
+          if(cmd == 'play' && room != -1){
+              sound_dir = dir+''+String.fromCharCode(65+room)+'.mp3';
+              sound = new Audio(sound_dir);
+              sound.play();
+              sound.addEventListener("ended", function(){
+                // wave.stop();
+              });
+          }
+        });
+
+       $('.item').on('click', function() {
+          $('.item').removeClass('active');
+          $(this).addClass('active');
+          room = $('.item').index(this)-1;
+          socket.emit("join", color[room]);
+          $('body').css('background', color[room]);
+        });             
       });
-        function playsound()
-            {
-                $("#sound_laugh")[0].play();
-                $("#sound_laugh")[0].pause();
- 
-                setTimeout(function(){
-                    $("#sound_laugh")[0].currentTime = 0;
-                    $("#sound_laugh")[0].src = "../resources/scale/F+.mp3"
-                    $("#sound_laugh")[0].play();
-                }, 1000);
-                 setTimeout(function(){
-                    $("#sound_laugh")[1].currentTime = 0;
-                    $("#sound_laugh")[1].src = "../resources/scale/G+.mp3"
-                    $("#sound_laugh")[1].play();
-                }, 3000);
-            }
+         
     </script>
 
   </head>
+    <div class="ui vertical menu">
+      <div class="header item">ROOM</div>
+        <a class="item">
+          red
+        </a>
+        <a class="item">
+          orange
+        </a>
+        <a class="item">
+          yellow
+        </a>
+        <a class="item">
+          green
+        </a>
+        <a class="item">
+          blue
+        </a>
+        <a class="item">
+          Indigo
+        </a>
+        <a class="item">
+          purple
+        </a>
+    </div>
 
-    <!--  <audio id="sound_laugh" preload="auto" controls="controls">
-      <source src="../resources/scale/D+.mp3">
-      <source src="../resources/scale/A+.mp3">
-    </audio> -->
-    <div class="ui container">
-      <i class="icon code"></i>
-      <button class="ui red basic button">Red</button>
-      <button class="ui orange basic button">Orange</button>
-      <button class="ui yellow basic button">Yellow</button>
-      <button class="ui green basic button">Green</button>
-      <button class="ui blue basic button">Blue</button>
-      <button class="ui teal basic button">Teal</button>
-      <button class="ui purple basic button">Purple</button>
+    <div id="waveform">
+      
     </div>
   </body>
 </html>

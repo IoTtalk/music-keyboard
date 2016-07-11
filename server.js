@@ -21,10 +21,11 @@ serv_io.sockets.on('connection', function(socket) {
     socket.on('leave', function(data) { socket.leave(data); })
 });
 
-var room = 'red'
+var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
 setInterval(function(){
-    serv_io.sockets.in(room).emit('message', 'hello world!');
-}, 1000);
+	for (var i = 0; i < color.length; i++)
+		serv_io.sockets.in(color[i]).emit('command', 'play');
+}, 3500);
 
 
 
