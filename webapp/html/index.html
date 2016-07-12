@@ -37,7 +37,6 @@
         $('#soundBtn').click(function(){
           // sound = new Audio(sound_dir);
           // sound.play();
-          $('#sound').trigger("play");
           socket.emit("ack","played");
           $('#soundBtn').fadeOut('fast');
         });
@@ -66,7 +65,10 @@
           $('body').css('background', color[room]);
         });             
       });
-         
+        function play_sound(){
+          var s = getElementById('sound')[0];
+          s.play();
+        }
     </script>
 
   </head>
@@ -98,7 +100,7 @@
         </div>
 
         <div class="content two wide column">
-            <button id="soundBtn" class="circular ui icon button" >
+            <button id="soundBtn" class="circular ui icon button" onclick="play_sound()">
               <i class="massive icon Sound"></i>
               <audio id='sound'></audio>
             </button>
