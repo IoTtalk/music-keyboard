@@ -31,10 +31,10 @@ serv_io.sockets.on('connection', function(socket) {
 		socket.join(data); 
 
     	joined[color.indexOf(data)] = 1; 
-    	if(allIn() && !now){
+    	// if(allIn() && !now){
     		serv_io.sockets.in(color[n]).emit('command', 'play');
     		now = true;
-    	}
+    	// }
     });
     socket.on('leave', function(data) {
     	socket.leave(data); 
