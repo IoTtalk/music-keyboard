@@ -33,6 +33,7 @@
       var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
       var sound_dir;
       $(document).ready(function() {
+        $('#soundBtn').hide();
 
         $('#soundBtn').click(function(){
           // sound = new Audio(sound_dir);
@@ -41,10 +42,7 @@
           socket.emit("ack","played");
           $('#soundBtn').fadeOut('fast');
         });
-
-        $('#soundBtn').hide();
-
-          socket.on("command", function(cmd) {
+        socket.on("command", function(cmd) {
           if(cmd == 'play' && room != -1){
               sound_dir = dir+''+String.fromCharCode(65+room)+'.mp3';
               console.log(sound_dir);
@@ -53,7 +51,7 @@
           }
         });
 
-       $('.item').on('click', function() {
+       $('.item').click(function(){
           $('.item').removeClass('active');
           $(this).addClass('active');
 
@@ -65,7 +63,20 @@
           room = $('.item').index(this)-1;
           socket.emit("join", color[room]);
           $('body').css('background', color[room]);
-        });             
+       })
+       // $('.item').on('click', function() {
+       //    $('.item').removeClass('active');
+       //    $(this).addClass('active');
+
+       //    if(room != -1)
+       //      socket.emit("leave", color[room]);
+
+       //    $('#soundBtn').hide();
+
+       //    room = $('.item').index(this)-1;
+       //    socket.emit("join", color[room]);
+       //    $('body').css('background', color[room]);
+       //  });             
       });
     </script>
 
@@ -102,7 +113,6 @@
               <i class="massive icon Sound"></i>
               <audio id='sound' preload="auto"></audio>
             </button>
-
         </div>
       </div>
     </div>
