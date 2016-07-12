@@ -35,8 +35,9 @@
       $(document).ready(function() {
 
         $('#soundBtn').click(function(){
-          sound = new Audio(sound_dir);
-          sound.play();
+          // sound = new Audio(sound_dir);
+          // sound.play();
+          $('#sound').trigger("play");
           socket.emit("ack","played");
           $('#soundBtn').fadeOut('fast');
         });
@@ -46,6 +47,7 @@
           socket.on("command", function(cmd) {
           if(cmd == 'play' && room != -1){
               sound_dir = dir+''+String.fromCharCode(65+room)+'.mp3';
+              $('#sound').attr('src',sound_dir);
               $('#soundBtn').fadeIn('fast');
           }
         });
@@ -98,7 +100,9 @@
         <div class="content two wide column">
             <button id="soundBtn" class="circular ui icon button" >
               <i class="massive icon Sound"></i>
+              <audio id='sound'></audio>
             </button>
+
         </div>
       </div>
     </div>
