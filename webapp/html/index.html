@@ -7,16 +7,23 @@
 
   <body>
     <style type="text/css">
-      #siri9{
-          position:fixed;
+      .content{
+         /* position:fixed;
           top: 50%;
           left: 50%;
           width:30em;
           height:18em;
-          margin-top: -9em; /*set to a negative number 1/2 of your height*/
-          margin-left: -15em; /*set to a negative number 1/2 of your width*/
+          margin-top: -9em;
+          margin-left: -15em;
           width: 518px;
-          height: 80px;
+          height: 80px;*/
+          margin-left: 200px;
+          /*border-style: solid;*/
+          text-align:center;
+          vertical-align: middle;
+      }
+      #soundBtn{
+        margin-top:50px;
       }
     </style>
     <script>
@@ -30,11 +37,9 @@
           socket.on("command", function(cmd) {
           if(cmd == 'play' && room != -1){
               sound_dir = dir+''+String.fromCharCode(65+room)+'.mp3';
-              sound = new Audio(sound_dir);
-              sound.play();
-              sound.addEventListener("ended", function(){
-                // wave.stop();
-              });
+              // sound = new Audio(sound_dir);
+              // sound.play();
+              
           }
         });
 
@@ -50,33 +55,39 @@
     </script>
 
   </head>
-    <div class="ui vertical menu">
-      <div class="header item">ROOM</div>
-        <a class="item">
-          red
-        </a>
-        <a class="item">
-          orange
-        </a>
-        <a class="item">
-          yellow
-        </a>
-        <a class="item">
-          green
-        </a>
-        <a class="item">
-          blue
-        </a>
-        <a class="item">
-          Indigo
-        </a>
-        <a class="item">
-          purple
-        </a>
-    </div>
+  <div class="ui grid">
+    <div class="row">
+        <div class="ui vertical menu two wide column">
+          <div class="header item">ROOM</div>
+            <a class="item">
+              red
+            </a>
+            <a class="item">
+              orange
+            </a>
+            <a class="item">
+              yellow
+            </a>
+            <a class="item">
+              green
+            </a>
+            <a class="item">
+              blue
+            </a>
+            <a class="item">
+              Indigo
+            </a>
+            <a class="item">
+              purple
+            </a>
+        </div>
 
-    <div id="waveform">
-      
+        <div class="content three wide column">
+            <button id="soundBtn" class="circular ui icon button" >
+              <i class="massive icon Sound"></i>
+            </button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
