@@ -8,17 +8,7 @@
   <body>
     <style type="text/css">
       .content{
-         /* position:fixed;
-          top: 50%;
-          left: 50%;
-          width:30em;
-          height:18em;
-          margin-top: -9em;
-          margin-left: -15em;
-          width: 518px;
-          height: 80px;*/
           margin-left: 200px;
-          /*border-style: solid;*/
           text-align:center;
           vertical-align: middle;
       }
@@ -33,15 +23,9 @@
       var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
       var sound_dir;
       $(document).ready(function() {
+        
         $('#soundBtn').hide();
 
-        $('#soundBtn').click(function(){
-          // sound = new Audio(sound_dir);
-          // sound.play();
-          $('#sound')[0].play();
-          socket.emit("ack","played");
-          $('#soundBtn').fadeOut('fast');
-        });
         socket.on("command", function(cmd) {
           if(cmd == 'play' && room != -1){
               sound_dir = dir+''+String.fromCharCode(65+room)+'.mp3';
@@ -50,7 +34,13 @@
               $('#soundBtn').fadeIn('fast');
           }
         });
-
+        $('#soundBtn').click(function(){
+          // sound = new Audio(sound_dir);
+          // sound.play();
+          $('#sound')[0].play();
+          socket.emit("ack","played");
+          $('#soundBtn').fadeOut('fast');
+        });
        $('.item').click(function(){
           $('.item').removeClass('active');
           $(this).addClass('active');
@@ -64,19 +54,6 @@
           socket.emit("join", color[room]);
           $('body').css('background', color[room]);
        })
-       // $('.item').on('click', function() {
-       //    $('.item').removeClass('active');
-       //    $(this).addClass('active');
-
-       //    if(room != -1)
-       //      socket.emit("leave", color[room]);
-
-       //    $('#soundBtn').hide();
-
-       //    room = $('.item').index(this)-1;
-       //    socket.emit("join", color[room]);
-       //    $('body').css('background', color[room]);
-       //  });             
       });
     </script>
 

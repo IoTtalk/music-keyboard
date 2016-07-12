@@ -11,8 +11,6 @@ app.get("/",function(req,res){
 	res.sendFile(__dirname+'/webapp/html/index.html');
 });
 
-
-
 server.listen((process.env.PORT || 5566));
 
 var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
