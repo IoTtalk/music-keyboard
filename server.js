@@ -25,7 +25,7 @@ var joined = new Array(color.length);
 var part = null;
 var progress = 0;
 var defaultSong = 'panther.mid'
-
+var playing = false;
 
 var allIn = function(){
 	for(var i = 0; i < color.length; i++)
@@ -60,7 +60,7 @@ serv_io.sockets.on('connection', function(socket) {
     socket.on('join', function(data) { 
 		socket.join(data); 
     	joined[color.indexOf(data)] = 1; 
-    	if(allIn()){
+    	if(allIn() && !playing){
             if(!part){
                  fs.readFile("midi/" + defaultSong, "binary", function(err, data){
                     if (!err){

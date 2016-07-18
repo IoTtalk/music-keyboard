@@ -30,15 +30,15 @@
         
         $('#soundBtn').hide();
         socket.on("command", function(note) {
-            // t = note.replace('#','');
-            // sound_dir = dir+t+'.mp3';
-            // $('#sound').attr('src',sound_dir);
-            // $('#soundBtn').fadeIn('fast');
+            t = note.replace('#','');
+            sound_dir = dir+t+'.mp3';
+            $('#sound').attr('src',sound_dir);
+            $('#soundBtn').fadeIn('fast');
 
 
-            var synth = new Tone.PolySynth(1, Tone.Synth).toMaster();
-            synth.triggerAttackRelease(note);
-            socket.emit("ack","played");
+            // var synth = new Tone.PolySynth(1, Tone.Synth).toMaster();
+            // synth.triggerAttackRelease(note);
+            // socket.emit("ack","played");
         });
 
         $('#soundBtn').click(function(){
