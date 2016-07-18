@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" charset="utf-8"/>
+	<script src="../js/socket_io.js" type="text/javascript"></script>
+	<script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+	<script src="../js/semantic.js" type="text/javascript"></script>
+    <link href="../css/semantic.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		var socket = io.connect();
+    		$('.item').click(function(){
+				socket.emit("chooseSong",$(this).attr("name"));
+       		});
+    	})
+
+    </script>
+
+
+</head>
+
+<body>
+	<div class="ui form">
+	  <div class="grouped fields">
+	    <label>Choose a song to play</label>
+	    <!-- <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="totoro" class="item">
+	        <label>龍貓</label>
+	      </div>
+	    </div> -->
+<!-- 	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="doraemon" class="item">
+	        <label>多啦A夢</label>
+	      </div>
+	    </div> -->
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="panther" class="item">
+	        <label>頑皮豹</label>
+	      </div>
+	    </div>
+<!-- 	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="star" class="item">
+	        <label>小星星</label>
+	      </div>
+	    </div> -->
+<!-- 	     <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="bee" class="item">
+	        <label>小蜜蜂</label>
+	      </div>
+	    </div> -->
+	  </div>
+	</div>
+
+
+
+
+
+</body>
+</html>

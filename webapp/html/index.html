@@ -20,25 +20,22 @@
     </style>
     <script>
       var socket = io.connect();
-      var dir = '../resources/scale/';
+      var dir = '../resources/notes/';
       var room = -1;
       var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
       var sound_dir;
+
       $(document).ready(function() {
         
         $('#soundBtn').hide();
-
-        socket.on("command", function(cmd) {
-          if(cmd == 'play' && room != -1){
-              sound_dir = dir+''+String.fromCharCode(65+room)+'.mp3';
-              console.log(sound_dir);
-              $('#sound').attr('src',sound_dir);
-              $('#soundBtn').fadeIn('fast');
-          }
+        socket.on("command", function(note) {
+            t = note.replace('#','');
+            sound_dir = dir+t+'.mp3';
+            $('#sound').attr('src',sound_dir);
+            $('#soundBtn').fadeIn('fast');
         });
+
         $('#soundBtn').click(function(){
-          // sound = new Audio(sound_dir);
-          // sound.play();
           $('#sound')[0].play();
           socket.emit("ack","played");
           $('#soundBtn').fadeOut('fast');
@@ -55,7 +52,7 @@
           room = $('.item').index(this)-1;
           socket.emit("join", color[room]);
           $('body').css('background', color[room]);
-       })
+       });
       });
     </script>
 
