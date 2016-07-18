@@ -43,7 +43,9 @@
 
         $('#soundBtn').click(function(){
           $('#sound')[0].play();
-          socket.emit("ack","played");
+          setTimeout(function(){
+            socket.emit("ack","played");
+          }, 2000);
           $('#soundBtn').fadeOut('fast');
         });
        $('.item').click(function(){
