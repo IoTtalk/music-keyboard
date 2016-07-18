@@ -13,59 +13,7 @@
 	<script type="text/javascript">
 		var dir = '../resources/notes/';
 		$(document).ready(function(){
-		// 	var socket = io.connect();
-		// 	socket.emit("midi", "");
-
-		// 	socket.on("midi", function(part) {
-		// 		i = 0;
-		// 		t = part[i++]['noteName'].replace('#','');
-		// 		sound_dir = dir+t+'.mp3';
-		// 		sound = new Audio(sound_dir);
-		// 		sound.addEventListener('ended', function() {
-		// 			if(i < part.length){
-		// 				t = part[i++]['noteName'].replace('#','');
-		// 				sound_dir = dir+t+'.mp3';
-		// 				sound = new Audio(sound_dir);
-		// 				sound.play();
-		// 			}
-		// 		}, false);
-		// 		sound.play();
-		// 	});
-		// });			
 			
-
-			
-			// Tone.Transport.start();
-
-			// // var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
-			// // var synth = new Tone.Synth({
-			// // 	"oscillator" : {
-			// // 		"type" : "square"
-			// // 	},
-			// // 	"envelope" : {
-			// // 		"attack" : 0.01,
-			// // 		"decay" : 0.2,
-			// // 		"sustain" : 0.2,
-			// // 		"release" : 0.2,
-			// // 	}
-			// // }).toMaster();
-			// // synth.triggerAttackRelease("C4", "8n");
-			// // var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
-			// // //set the attributes using the set interface
-			// // synth.set("detune", -1200);
-			// // //play a chord
-			// // synth.triggerAttackRelease(["C4", "E4", "A4"], "4n");
-
-			// //use an array of objects as long as the object has a "time" attribute
-			// // var part = new Tone.Part(function(time, value){
-			// // 	//the value is an object which contains both the note and the velocity
-			// // 	// alert('12')
-			// // 	synth.triggerAttackRelease(value.note, "8n", time, value.velocity);
-			// // }, [{"time" : 0, "note" : "C3", "velocity": 0.9}, 
-			// // 	   {"time" : "0:2", "note" : "C4", "velocity": 0.5}
-			// // ]).start(0);
-
-
 			var socket = io.connect();
 			socket.emit("midi", "");
 			socket.on("midi", function(part) {
@@ -79,7 +27,6 @@
 					function(time, note){
 						synth.triggerAttackRelease(note.noteName);
 					}, part).start(0);
-				
 			});
 				
 		});

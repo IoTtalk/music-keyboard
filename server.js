@@ -37,7 +37,7 @@ serv_io.sockets.on('connection', function(socket) {
 
 
     socket.on('midi',function(data){
-        fs.readFile("midi/panther.mid", "binary", function(err, data){
+        fs.readFile("midi/totoro.mid", "binary", function(err, data){
             if (!err){
                 part = MidiConvert.parseParts(data)[0];
                 serv_io.sockets.emit('midi',part);
