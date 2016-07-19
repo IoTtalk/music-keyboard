@@ -41,6 +41,7 @@ var partition = function(len){
             r = {"start":head,"end":len};
             head = len;
         }
+        console.log(r);
         return r;
     }
     else{
