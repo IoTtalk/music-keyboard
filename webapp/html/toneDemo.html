@@ -18,15 +18,13 @@
 			socket.emit("midi", "");
 			socket.on("midi", function(part) {
 				console.log(part);
-				var loop = new Tone.Loop(function(time){
-
-				}, "8n").start(0);
-				Tone.Transport.start(0);
-				var synth = new Tone.PolySynth(1, Tone.Synth).toMaster();
+				
+				var synth = new Tone.Synth().toMaster();
 				var pianoPart = new Tone.Part(
 					function(time, note){
-						synth.triggerAttackRelease(note.noteName);
+						synth.triggerAttackRelease(note.noteName,note.duration,time,note.velocity);
 					}, part).start(0);
+				Tone.Transport.start();
 			});
 				
 		});
@@ -34,10 +32,5 @@
 </head>
 <body>	
 
-<!-- 	</style>
-	synth.triggerAttack(note);
-
-
-	</style> -->
 </body>
 </html>
