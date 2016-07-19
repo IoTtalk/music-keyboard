@@ -18,12 +18,12 @@ app.get("/chooseSong",function(req,res){
 app.get("/toneDemo",function(req,res){
     res.sendFile(__dirname+'/webapp/html/toneDemo.html');
 });
-server.listen((process.env.PORT || 5566));
+server.listen((process.env.PORT || 5566),'0.0.0.0');
 
 var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
 var joined = new Array(color.length);
 var part = null;
-var defaultSong = 'doraemon.mid'
+var defaultSong = 'titanic.mid'
 var playing = false;
 var head = 0;
 var duration = 20;
@@ -51,7 +51,7 @@ var partition = function(len){
 var sendNotes = function(){
     var r = partition(part.length);
     if(r != null){
-        serv_io.sockets.in(color[room%room_num]).emit('command', part.slice(r.start,r.end)); 
+        serv_io.sockets.in(color[room%room_num]).emit('part', part.slice(r.start,r.end)); 
         room++;
     }
     else{
@@ -72,8 +72,8 @@ var allIn = function(){
 serv_io.sockets.on('connection', function(socket) {
 
 
-    socket.on('midi',function(data){
-        fs.readFile("midi/doraemon.mid", "binary", function(err, data){
+    socket.on('midi',function(songName){
+        fs.readFile("midi/"+songName+".mid", "binary", function(err, data){
             if (!err){
                 part = MidiConvert.parseParts(data)[0];
                 serv_io.sockets.emit('midi',part);
@@ -84,9 +84,10 @@ serv_io.sockets.on('connection', function(socket) {
     })
     socket.on('chooseSong',function(songName){
         fs.readFile("midi/"+songName+".mid", "binary", function(err, data){
-            if (!err){
+            if (!err && allIn()){
                 part = MidiConvert.parseParts(data)[0];
                 reset();
+                sendNotes();
             }else{
                 console.log(err);
             }
@@ -96,15 +97,17 @@ serv_io.sockets.on('connection', function(socket) {
 		socket.join(data); 
     	joined[color.indexOf(data)] = 1; 
     	if(allIn() && !playing){
-            if(!part){
-                 fs.readFile("midi/" + defaultSong, "binary", function(err, data){
-                    if (!err){
-                            part = MidiConvert.parseParts(data)[0];
-                            sendNotes();
-                    }else{
-                        console.log(err);
-                    }
-                });
+            if(!part){  
+                serv_io.sockets.emit('command',"chooseSong");
+
+                // fs.readFile("midi/" + defaultSong, "binary", function(err, data){
+                //     if (!err){
+                //             part = MidiConvert.parseParts(data)[0];
+                //             sendNotes();
+                //     }else{
+                //         console.log(err);
+                //     }
+                // });
             }
             else{
                 sendNotes(); 

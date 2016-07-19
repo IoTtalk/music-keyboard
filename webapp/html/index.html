@@ -15,55 +15,37 @@
           text-align:center;
           vertical-align: middle;
       }
-      #soundBtn{
-        margin-top:100px; 
-      }
     </style>
     <script>
       var socket = io.connect();
-      var dir = '../resources/notes/';
       var room = -1;
       var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
-      var sound_dir;
 
       $(document).ready(function() {
+        var synth = new Tone.Synth().toMaster();
         
-
-        $('#soundBtn').hide();
-        socket.on("command", function(part) {
-            // t = note.replace('#','');
-            // sound_dir = dir+t+'.mp3';
-            // $('#sound').attr('src',sound_dir);
-            // $('#soundBtn').fadeIn('fast');
-          var synth = new Tone.Synth().toMaster();
+        socket.on("part", function(part) {
           var pianoPart = new Tone.Part(
           function(time, note){
             synth.triggerAttackRelease(note.noteName,note.duration,time,note.velocity);
-            // if(time >= ){
-              // console.log(part[part.length-1].time);
-            // }
-            // console.log(time);
           }, part).start(0);
           Tone.Transport.start();
-          socket.emit("ack","played");
-
+          // setTimeout(function(){
+              socket.emit("ack","played");
+          // }, 2000);
         });
+        socket.on("command",function(cmd){
+            if(cmd == "chooseSong"){
+                console.log("plz choose a song !");
+            }
 
-        $('#soundBtn').click(function(){
-          $('#sound')[0].play();
-          setTimeout(function(){
-            socket.emit("ack","played");
-          }, 2000);
-          $('#soundBtn').fadeOut('fast');
-        });
+        })
        $('.item').click(function(){
           $('.item').removeClass('active');
           $(this).addClass('active');
 
           if(room != -1)
             socket.emit("leave", color[room]);
-
-          $('#soundBtn').hide();
 
           room = $('.item').index(this)-1;
           socket.emit("join", color[room]);
@@ -101,10 +83,7 @@
         </div>
 
         <div class="content">
-            <button id="soundBtn" class="circular ui icon button">
-              <i class="massive icon Sound"></i>
-              <audio id='sound' preload="auto"></audio>
-            </button>
+         
         </div>
       </div>
     </div>
