@@ -18,15 +18,17 @@ app.get("/chooseSong",function(req,res){
 app.get("/toneDemo",function(req,res){
     res.sendFile(__dirname+'/webapp/html/toneDemo.html');
 });
+app.get("/temp",function(req,res){
+    res.sendFile(__dirname+'/webapp/html/temp.html');
+});
 server.listen((process.env.PORT || 5566),'0.0.0.0');
 
 var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
 var joined = new Array(color.length);
 var part = null;
-var defaultSong = 'titanic.mid'
 var playing = false;
 var head = 0;
-var duration = 20;
+var duration = 50;
 var room = 0;
 var room_num = 2;
 
@@ -84,8 +86,8 @@ serv_io.sockets.on('connection', function(socket) {
     })
     socket.on('chooseSong',function(songName){
         fs.readFile("midi/"+songName+".mid", "binary", function(err, data){
+            part = MidiConvert.parseParts(data)[0];
             if (!err && allIn()){
-                part = MidiConvert.parseParts(data)[0];
                 reset();
                 sendNotes();
             }else{
@@ -99,15 +101,6 @@ serv_io.sockets.on('connection', function(socket) {
     	if(allIn() && !playing){
             if(!part){  
                 serv_io.sockets.emit('command',"chooseSong");
-
-                // fs.readFile("midi/" + defaultSong, "binary", function(err, data){
-                //     if (!err){
-                //             part = MidiConvert.parseParts(data)[0];
-                //             sendNotes();
-                //     }else{
-                //         console.log(err);
-                //     }
-                // });
             }
             else{
                 sendNotes(); 
@@ -116,7 +109,8 @@ serv_io.sockets.on('connection', function(socket) {
         }
     });
     socket.on('leave', function(data) {
-    	socket.leave(data); 
+    	socket.leave(data);
+
     });
     socket.on('ack',function(msg){
     	if(msg == "played"){ 

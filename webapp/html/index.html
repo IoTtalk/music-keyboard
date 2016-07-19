@@ -6,15 +6,19 @@
     <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
     <script src="../js/Tone.js" type="text/javascript"></script>
     <script src="../js/semantic.js" type="text/javascript"></script>
-    <link href="../css/semantic.css" rel="stylesheet" type="text/css">
+    <script src="../js/siriwave.js" type="text/javascript"></script>    
 
-  <body>
+    <link href="../css/semantic.css" rel="stylesheet" type="text/css">
     <style type="text/css">
-      .content{
-          margin-left: 100px;
-          text-align:center;
-          vertical-align: middle;
-      }
+        #content{
+          width: 200;
+          height: 100;
+          margin: auto;
+          margin-top: 200px;
+        }
+        .ui.menu {
+          border-radius: 0px !important;
+        }
     </style>
     <script>
       var socket = io.connect();
@@ -22,17 +26,31 @@
       var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
 
       $(document).ready(function() {
-        var synth = new Tone.Synth().toMaster();
-        
+        //animate
+        var siriWave = new SiriWave({
+            container: document.getElementById('content'),
+            width: 200,
+            height: 100,
+            speed: 0.09,
+            frequency: 2,
+            autostart:true,
+        });
+        siriWave.start();
+        setTimeout(function(){
+              siriWave.stop();
+        }, 100);
+        // var synth = new Tone.Synth().toMaster();
+        var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
         socket.on("part", function(part) {
           var pianoPart = new Tone.Part(
           function(time, note){
             synth.triggerAttackRelease(note.noteName,note.duration,time,note.velocity);
           }, part).start(0);
           Tone.Transport.start();
-          // setTimeout(function(){
-              socket.emit("ack","played");
-          // }, 2000);
+          socket.emit("ack","played");
+          
+
+          
         });
         socket.on("command",function(cmd){
             if(cmd == "chooseSong"){
@@ -40,52 +58,35 @@
             }
 
         })
-       $('.item').click(function(){
-          $('.item').removeClass('active');
+       $('.entity').click(function(){
+          $('.entity').removeClass('active');
           $(this).addClass('active');
 
           if(room != -1)
             socket.emit("leave", color[room]);
 
-          room = $('.item').index(this)-1;
+          room = $('.entity').index(this);
           socket.emit("join", color[room]);
           $('body').css('background', color[room]);
        });
+
       });
+
+
     </script>
-
   </head>
-  <div class="ui grid">
-    <div class="row">
-        <div class="ui vertical menu six wide column">
-          <div class="header item">ROOM</div>
-            <a class="item">
-              red
-            </a>
-            <a class="item">
-              orange
-            </a>
-            <a class="item">
-              yellow
-            </a>
-            <a class="item">
-              green
-            </a>
-            <a class="item">
-              blue
-            </a>
-            <a class="item">
-              Indigo
-            </a>
-            <a class="item">
-              purple
-            </a>
-        </div>
-
-        <div class="content">
-         
-        </div>
-      </div>
-    </div>
+   <body>
+     <div class="row">
+        <div class="ui inverted seven item menu">
+            <a class="item entity">red</a>
+            <a class="item entity">orange</a>
+            <a class="item entity">yellow</a>
+            <a class="item entity">green</a>
+            <a class="item entity">blue</a>
+            <a class="item entity">Indigo</a>
+            <a class="item entity">purple</a>
+        </div> 
+        <div id="content"></div>
+      </div> 
   </body>
 </html>

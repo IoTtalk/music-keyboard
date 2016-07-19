@@ -20,7 +20,13 @@
 		$(document).ready(function(){
 			var socket = io.connect();
 			var pianoPart = null;
-			var synth = new Tone.Synth().toMaster();
+			// var synth = new Tone.Synth().toMaster();
+			// var synth = new Tone.PluckSynth().toMaster();
+			// var synth = new Tone.MembraneSynth().toMaster();
+			// var synth = new Tone.Sampler().toMaster();
+			// var synth = new Tone.SimpleSynth().toMaster();
+
+			var synth = new Tone.PolySynth(20, Tone.Synth).toMaster();
 
 
 
@@ -160,9 +166,43 @@
 	    <div class="field">
 	      <div class="ui radio checkbox">
 	        <input type="radio" name="wedding" class="item">
-	        <label>結婚進行曲/label>
+	        <label>結婚進行曲</label>
 	      </div>
 	    </div>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="happy" class="item">
+	        <label>快樂頌</label>
+	      </div>
+	    </div>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="londonbridge" class="item">
+	        <label>倫敦鐵橋</label>
+	      </div>
+	    </div>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="twotiger" class="item">
+	        <label>兩隻老虎</label>
+	      </div>
+	    </div>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="epyy" class="item">
+	        <label>伊比呀呀</label>
+	      </div>
+	    </div>
+	    <div class="field">
+	      <div class="ui radio checkbox">
+	        <input type="radio" name="donkey" class="item">
+	        <label>小毛驢</label>
+	      </div>
+	    </div>
+
+
+
+
 	  </div>
 	</div>
 </body>
