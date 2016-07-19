@@ -23,12 +23,47 @@ server.listen((process.env.PORT || 5566));
 var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
 var joined = new Array(color.length);
 var part = null;
-var progress = 0;
-var defaultSong = 'panther.mid'
+var defaultSong = 'doraemon.mid'
 var playing = false;
+var head = 0;
+var duration = 20;
+var room = 0;
+var room_num = 3;
 
+var partition = function(len){
+    var r;
+    if(head < len){
+        if(head+20 < len){
+            r = {"start":head,"end":head+duration};
+            head+=duration;
+        }
+        else{
+            r = {"start":head,"end":len};
+            head = len;
+        }
+        return r;
+    }
+    else{
+        return null;
+    }
+}
+var sendNotes = function(){
+    var r = partition(part.length);
+    if(r != null){
+        serv_io.sockets.in(color[room%room_num]).emit('command', part.slice(r.start,r.end)); 
+        room++;
+    }
+    else{
+        reset();
+    }
+}
+var reset = function(){
+    playing = false;
+    head = 0;
+    room = 0;
+}
 var allIn = function(){
-	for(var i = 0; i < color.length; i++)
+	for(var i = 0; i < room_num; i++)
     		if(joined[i] != 1)
     			return false;
     return true;
@@ -50,8 +85,7 @@ serv_io.sockets.on('connection', function(socket) {
         fs.readFile("midi/"+songName+".mid", "binary", function(err, data){
             if (!err){
                 part = MidiConvert.parseParts(data)[0];
-                // console.log(part);
-                progress = 0;
+                reset();
             }else{
                 console.log(err);
             }
@@ -65,34 +99,24 @@ serv_io.sockets.on('connection', function(socket) {
                  fs.readFile("midi/" + defaultSong, "binary", function(err, data){
                     if (!err){
                             part = MidiConvert.parseParts(data)[0];
-                            //Determin which room by note's first character
-                            var room = part[0]["noteName"].charCodeAt(0)-65;
-                            serv_io.sockets.in(color[room]).emit('command', part[0]["noteName"]); 
+                            sendNotes();
                     }else{
                         console.log(err);
                     }
                 });
             }
             else{
-                var room = part[0]["noteName"].charCodeAt(0)-65;//determin which room
-                serv_io.sockets.in(color[room]).emit('command', part[0]["noteName"]);  
+                sendNotes(); 
             }
+            playing = true;
         }
-
     });
     socket.on('leave', function(data) {
     	socket.leave(data); 
     });
     socket.on('ack',function(msg){
     	if(msg == "played"){ 
-           
-            //first note is played at the time all join,so plus 1
-            progress++;
-            if(progress < part.length){
-                console.log(part[progress]["noteName"]);
-                var room = part[progress]["noteName"].charCodeAt(0)-65;//determin which room
-                serv_io.sockets.in(color[room]).emit('command', part[progress]["noteName"]);
-            }
+            sendNotes();
     	}
     });
 });
