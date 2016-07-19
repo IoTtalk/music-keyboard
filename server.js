@@ -28,7 +28,7 @@ var playing = false;
 var head = 0;
 var duration = 20;
 var room = 0;
-var room_num = 3;
+var room_num = 2;
 
 var partition = function(len){
     var r;

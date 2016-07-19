@@ -39,10 +39,12 @@
           var pianoPart = new Tone.Part(
           function(time, note){
             synth.triggerAttackRelease(note.noteName,note.duration,time,note.velocity);
+            if(time >= part[part.length-1].time){
+              console.log('end');
+              socket.emit("ack","played");
+            }
           }, part).start(0);
           Tone.Transport.start();
-          socket.emit("ack","played");
-
         });
 
         $('#soundBtn').click(function(){
