@@ -1,92 +1,138 @@
 <html>
-  <head>
-     <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
+<head>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
 
     <script src="../js/socket_io.js" type="text/javascript"></script>
     <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
     <script src="../js/Tone.js" type="text/javascript"></script>
     <script src="../js/semantic.js" type="text/javascript"></script>
-    <script src="../js/siriwave.js" type="text/javascript"></script>    
+    <script src="../js/siriwave.js" type="text/javascript"></script>
 
     <link href="../css/semantic.css" rel="stylesheet" type="text/css">
     <style type="text/css">
-        #content{
-          width: 200;
-          height: 100;
-          margin: auto;
-          margin-top: 200px;
+        #content {
+            width: 200px;
+            height: 100px;
+            margin: auto;
+            margin-top: 200px;
         }
         .ui.menu {
-          border-radius: 0px !important;
+            border-radius: 0px !important;
         }
+
     </style>
     <script>
-      var socket = io.connect();
-      var room = -1;
-      var color = ['#dc143c','#ffa500','#ffd700','#3cb371','#1e90ff','#00bfff','#9932cc'];
+        var socket = io.connect();
+        var room = -1;
+        var color = ['#dc143c', '#ffa500', '#ffd700', '#3cb371', '#1e90ff', '#00bfff', '#9932cc'];
+        var songId = -1;
+        var partArr = [];
+        var currentPart = null;
 
-      $(document).ready(function() {
-        //animate
-        var siriWave = new SiriWave({
-            container: document.getElementById('content'),
-            width: 200,
-            height: 100,
-            speed: 0.09,
-            frequency: 2,
-            autostart:true,
-        });
-        siriWave.start();
-        setTimeout(function(){
-              siriWave.stop();
-        }, 100);
-        // var synth = new Tone.Synth().toMaster();
-        var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
-        socket.on("part", function(part) {
-          var pianoPart = new Tone.Part(
-          function(time, note){
-            synth.triggerAttackRelease(note.noteName,note.duration,time,note.velocity);
-          }, part).start(0);
-          Tone.Transport.start();
-          socket.emit("ack","played");
-          
-
-          
-        });
-        socket.on("command",function(cmd){
-            if(cmd == "chooseSong"){
-                console.log("plz choose a song !");
+        var clearAllPart = function(){
+            if(currentPart != null && currentPart.state == "started")
+                currentPart.stop();
+            if(partArr.length != 0) {//partArr is not empty
+                for (var i = 0; i < partArr.length; i++) {
+                    console.log(partArr[i].state);
+                    if(partArr[i].state == "started") {
+                        partArr[i].stop();
+                    }
+                }
+                partArr = [];
             }
+        };
 
-        })
-       $('.entity').click(function(){
-          $('.entity').removeClass('active');
-          $(this).addClass('active');
+        $(document).ready(function () {
+            //animate
+            var siriWave = new SiriWave({
+                container: document.getElementById('content'),
+                width: 200,
+                height: 100,
+                speed: 0.09,
+                frequency: 2,
+                autostart: true
+            });
+            siriWave.start();
+            setTimeout(function () {
+                siriWave.stop();
+            }, 100);
 
-          if(room != -1)
-            socket.emit("leave", color[room]);
+            // var synth = new Tone.Synth().toMaster();
+            var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
+            socket.on("partObject", function (obj) {
+                console.log(obj);
+                if (songId != obj.songId && songId != -1) {
+                    console.log('song switch!');
+//                    for (var i = 0; i < partArr.length; i++) {
+//                        console.log(partArr[i].state);
+//                        partArr[i].stop();
+//                    }
+//                    partArr = [];
+                    clearAllPart();
+                }
+                songId = obj.songId;
+                var part = obj.songPart;
+                currentPart = new Tone.Part(function (time, note) {
+                    synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
+                    console.log(note.index + ": " + note.noteName);
+                    if (note.index != 0 && (note.index % (currentPart.length)) == 0) {
+                        console.log('part end');
+                    }
 
-          room = $('.entity').index(this);
-          socket.emit("join", color[room]);
-          $('body').css('background', color[room]);
-       });
+                }, part);
+                currentPart.start();
+                partArr.push(currentPart);
+                Tone.Transport.start();
+                socket.emit("ack", "played");
 
-      });
+            });
+            socket.on("command", function (cmd) {
+                if (cmd == "chooseSong") {
+                    console.log("plz choose a song !");
+                }
+                if(cmd == "clearAllPart"){
+                    clearAllPart();
+                }
+            });
+            $('.entity').click(function () {
+                $('.entity').removeClass('active');
+                $(this).addClass('active');
 
+                if (room != -1) {
+                    if(room !=  $('.entity').index(this)) {//not click self
+                        clearAllPart();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                socket.emit("leave", color[room]);
+                room = $('.entity').index(this);
+                socket.emit("join", color[room]);
+                $('body').css('background', color[room]);
+            });
+
+        });
+        window.onbeforeunload = function(){
+            if(room != -1)
+                socket.emit("leave", color[room]);
+        };
 
     </script>
-  </head>
-   <body>
-     <div class="row">
-        <div class="ui inverted seven item menu">
-            <a class="item entity">red</a>
-            <a class="item entity">orange</a>
-            <a class="item entity">yellow</a>
-            <a class="item entity">green</a>
-            <a class="item entity">blue</a>
-            <a class="item entity">Indigo</a>
-            <a class="item entity">purple</a>
-        </div> 
-        <div id="content"></div>
-      </div> 
-  </body>
+</head>
+<body>
+<div class="row">
+    <div class="ui inverted seven item menu">
+        <a class="item entity">red</a>
+        <a class="item entity">orange</a>
+        <a class="item entity">yellow</a>
+        <a class="item entity">green</a>
+        <a class="item entity">blue</a>
+        <a class="item entity">Indigo</a>
+        <a class="item entity">purple</a>
+    </div>
+    <div id="content"></div>
+</div>
+</body>
 </html>

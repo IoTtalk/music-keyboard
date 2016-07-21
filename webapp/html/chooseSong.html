@@ -1,180 +1,207 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" charset="utf-8"/>
-	<script src="../js/socket_io.js" type="text/javascript"></script>
-	<script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
-	<script src="../js/semantic.js" type="text/javascript"></script>
+    <title>choose song </title>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"
+          charset="utf-8"/>
+    <script src="../js/socket_io.js" type="text/javascript"></script>
+    <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="../js/semantic.js" type="text/javascript"></script>
     <link href="../css/semantic.css" rel="stylesheet" type="text/css">
     <script type="text/javascript">
-    	$(document).ready(function(){
-    		var socket = io.connect();
-    		$('.item').click(function(){
-    			i = $('.item').index(this);
-    			$('.item').each(function( index ) {
- 					 if(index != i){
- 					 	$(this).attr("checked",false);
- 					 }
+        $(document).ready(function () {
+            var socket = io.connect();
+            $('.item').click(function () {
+                i = $('.item').index(this);
+                $('.item').each(function (index) {
+                    if (index != i) {
+                        $(this).attr("checked", false);
+                    }
 
-				});
-				socket.emit("chooseSong",this.name);
-       		});
+                });
+                var o = {songName: this.name, songId: i};
+                socket.emit("chooseSong", o);
+            });
 
-    	})
+        })
 
     </script>
     <style type="text/css">
-    	.form{
-    		margin-left: 20px; 
-    	}
-    </style>	
+        .form {
+            margin-left: 20px;
+
+        }
+        body{
+            background-color: lavender;
+        }
+        label{
+            background-color: #FFFAF3;
+            border-radius: 3px;
+            border-style: solid;
+            border-color: white;
+            border-width: 2px;
+        }
+    </style>
 
 </head>
 
 <body>
-	<div class="ui form" id="boxes">
-	  <div class="grouped fields">
-	    <label>Choose a song to play</label>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="totoro" class="item">
-	        <label>龍貓</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="totoro_2" class="item">
-	        <label>龍貓2</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="doraemon" class="item">
-	        <label>多啦A夢</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="panther" class="item">
-	        <label>頑皮豹</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="star" class="item">
-	        <label>小星星</label>
-	      </div>
-	    </div>
-	     <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="bee" class="item">
-	        <label>小蜜蜂</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="slamdunk" class="item">
-	        <label>灌籃高手</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="dragonballz" class="item">
-	        <label>七龍珠</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="bee" class="item">
-	        <label>小蜜蜂</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="detective" class="item">
-	        <label>偵探柯南</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="canon" class="item">
-	        <label>卡農</label>
-	      </div>
-	    </div>
-	     <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="Buddha" class="item">
-	        <label>佛樂</label>
-	      </div>
-	    </div>
-	     <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="JINGLE_B" class="item">
-	        <label>Jingle Bell</label>
-	      </div>
-	    </div>
-	     <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="newyear" class="item">
-	        <label>新年到</label>
-	      </div>
-	    </div>
-	     <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="newyear_2" class="item">
-	        <label>恭賀新禧</label>
-	      </div>
-	    </div>
-	     <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="titanic" class="item">
-	        <label>鐵拿尼號</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="wedding" class="item">
-	        <label>結婚進行曲</label>
-	      </div>
-	    </div>
-	    	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="happy" class="item">
-	        <label>快樂頌</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="londonbridge" class="item">
-	        <label>倫敦鐵橋</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="twotiger" class="item">
-	        <label>兩隻老虎</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="epyy" class="item">
-	        <label>伊比呀呀</label>
-	      </div>
-	    </div>
-	    <div class="field">
-	      <div class="ui radio checkbox">
-	        <input type="radio" name="donkey" class="item" duration="20">
-	        <label>小毛驢</label>
-	      </div>
-	    </div>
+<div class="ui form" id="boxes">
+    <div class="grouped  fields">
+        <label>Choose a song to play</label>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="totoro" class="item">
+                <label>龍貓</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="totoro_2" class="item">
+                <label>龍貓2</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="doraemon" class="item">
+                <label>多啦A夢</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="panther" class="item">
+                <label>頑皮豹</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="star" class="item">
+                <label>小星星</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="bee" class="item">
+                <label>小蜜蜂</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="slamdunk" class="item">
+                <label>灌籃高手</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="slamdunk2" class="item">
+                <label>灌籃高手2</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="dragonballz" class="item">
+                <label>七龍珠</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="bee" class="item">
+                <label>小蜜蜂</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="detective" class="item">
+                <label>偵探柯南</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="detective_2" class="item">
+                <label>偵探柯南2</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="canon" class="item">
+                <label>卡農</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="Buddha" class="item">
+                <label>佛樂</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="JINGLE_B" class="item">
+                <label>Jingle Bell</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="newyear" class="item">
+                <label>新年到</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="newyear_2" class="item">
+                <label>恭賀新禧</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="titanic" class="item">
+                <label>鐵拿尼號</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="wedding" class="item">
+                <label>結婚進行曲</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="happy" class="item">
+                <label>快樂頌</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="londonbridge" class="item">
+                <label>倫敦鐵橋</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="twotiger" class="item">
+                <label>兩隻老虎</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="epyy" class="item">
+                <label>伊比呀呀</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="donkey" class="item" duration="20">
+                <label>小毛驢</label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui  checkbox">
+                <input type="radio" name="spiritedaway" class="item">
+                <label>神隱少女</label>
+            </div>
+        </div>
 
-
-
-	  </div>
-	</div>
-
-
-
+    </div>
+</div>
 
 
 </body>
