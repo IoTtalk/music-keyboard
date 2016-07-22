@@ -27,7 +27,7 @@ var playing = false;
 var head = 0;
 var duration = 20;
 var room = 0;
-var roomNum = 2;
+var roomNum = 3;
 var track = 0;
 
 var partition = function (len) {
@@ -114,26 +114,34 @@ serv_io.sockets.on('connection', function (socket) {
         joined[color.indexOf(data)]++;
         if (allIn() && !playing) {
             if (!song) {
-                serv_io.sockets.emit('command', "chooseSong");
+                for(var i = 0; i < roomNum; i++)
+                    serv_io.sockets.in(color[i]).emit('command', "chooseSong");
             }
             else {
                 sendNotes();
             }
         }
+        if(!allIn())
+            socket.emit('command',"waitOthers");
     });
     socket.on('leave', function (data) {
         console.log('leave');
         socket.leave(data);
-        reset();
         if(joined[color.indexOf(data)] > 0)
             joined[color.indexOf(data)]--;
-        for(var i = 0; i < joined.length; i++){
-            if(joined[i] != 0)
-                serv_io.sockets.in(color[i]).emit("command","clearAllPart");
+        if(!allIn()) {
+            for (var i = 0; i < joined.length; i++) {
+                if (joined[i] != 0) {
+                    serv_io.sockets.in(color[i]).emit("command", "clearAllPart");
+                    serv_io.sockets.in(color[i]).emit('command',"waitOthers");
+                }
+            }
+            reset();
         }
     });
     socket.on('ack', function (msg) {
-        if (msg == "played") {
+
+        if (msg == color[(room-1)%roomNum]) {
             sendNotes();
         }
     });
