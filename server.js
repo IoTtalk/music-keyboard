@@ -24,14 +24,15 @@ app.get("/toneDemo", function (req, res) {
 server.listen((process.env.PORT || 5566), '0.0.0.0');
 
 
-var color = ['#dc143c', '#ffa500', '#ffd700', '#3cb371', '#1e90ff', '#00bfff', '#9932cc'];
+var color = ['#dc143c', '#00bfff', '#ffd700', '#3cb371', '#1e90ff',
+            '#ffa500','#9932cc'];
 var joined = Array.apply(null, Array(color.length)).map(Number.prototype.valueOf,0);
 var song = null;
 var playing = false;
 var head = 0;
 var duration = 20;
 var room = 0;
-var roomNum = 2;
+var roomNum = 7;
 var track = 0;
 
 var partition = function (len) {
@@ -95,27 +96,26 @@ serv_io.sockets.on('connection', function (socket) {
     });
     socket.on('chooseSong', function (songObject) {
         fs.readFile("midi/" + songObject.songName + ".mid", "binary", function (err, data) {
-
-
-            if (!err && allIn()) {
-                reset();
-                var part = MidiConvert.parseParts(data)[track];
-
-                //add unique id for each note in part
-                for (var i = 1; i <= part.length; i++)
-                    part[i-1].index = i;
-
-                song = {songPart: part, songId: songObject.songId};
-                sendNotes();
-            }
             if (err) {
                 console.log(err);
+                return
+            }
+            reset();
+            var part = MidiConvert.parseParts(data)[track];
+            //add unique id for each note in part
+            for (var i = 1; i <= part.length; i++)
+                part[i-1].index = i;
+            song = {songPart: part, songId: songObject.songId};
+            //console.log(song);
+            if (allIn()) {
+                sendNotes();
             }
         });
     });
     socket.on('join', function (data) {
         socket.join(data);
         joined[color.indexOf(data)]++;
+        //console.log(song);
         if (allIn() && !playing) {
             if (!song) {
                 for(var i = 0; i < roomNum; i++)
@@ -129,7 +129,7 @@ serv_io.sockets.on('connection', function (socket) {
             socket.emit('command',"waitOthers");
     });
     socket.on('leave', function (data) {
-        console.log('leave');
+        //console.log('leave');
         socket.leave(data);
         if(joined[color.indexOf(data)] > 0)
             joined[color.indexOf(data)]--;
@@ -151,7 +151,6 @@ serv_io.sockets.on('connection', function (socket) {
     });
 
 });
-
 
 
 

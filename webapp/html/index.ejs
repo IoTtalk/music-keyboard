@@ -15,6 +15,10 @@
         .ui.menu {
             border-radius: 0px !important;
         }
+        .entity{
+            border-radius: 0px !important;
+        }
+
         #content {
             width: 95%;
             height: 600px;
@@ -22,11 +26,9 @@
         }
         #songBtn {
             margin-top: 20px;
-            margin-bottom: 100px;
+            margin-bottom: 50px;
         }
         #keyboardContainer{
-            width: 100%;
-            height: 150px;
             margin: auto;
         }
         #messageBox{
@@ -47,15 +49,16 @@
 
     </style>
     <script>
+
         var socket = io.connect();
         var room = -1;
-        var color = ['#dc143c', '#ffa500', '#ffd700', '#3cb371', '#1e90ff',
-            '#00bfff', '#9932cc'];
+        var color = ['#dc143c', '#00bfff', '#ffd700', '#3cb371', '#1e90ff',
+            '#ffa500','#9932cc'];
         var songId = -1;
         var partArr = [];
         var currentPart = null;
         var lastNoteName = null;
-
+        var keyboard;
         var messageDisplay = function(msg){
             $('.message').html(msg);
             console.log(msg);
@@ -75,6 +78,7 @@
         };
 
         $(document).ready(function () {
+
             //sound wave animate
 //            var siriWave = new SiriWave({
 //                container: document.getElementById('content'),
@@ -88,11 +92,11 @@
 //            setTimeout(function () {
 //                siriWave.stop();
 //            }, 100);
-
             var keyboard = new QwertyHancock({
                 id: 'keyboard',
                 width:  $('body').innerWidth()*0.97,
-                height: 150,
+//                height: 150,
+                height: ($('body').innerWidth()*0.97)/8.3,
                 octaves: 7,
                 startNote: 'A1',
                 whiteNotesColour: 'white',
@@ -187,19 +191,23 @@
             if(room != -1)
                 socket.emit("leave", color[room]);
         };
-
+        //fix me
+//        $( window ).resize(function() {
+//            keyboard.width = $('body').innerWidth()*0.97;
+//            keyboard.height = ($('body').innerWidth()*0.97)/8.3;
+//        });
     </script>
 </head>
 <body>
 <div class="row">
     <div class="ui inverted seven item menu">
-        <a class="item entity">red</a>
-        <a class="item entity">orange</a>
-        <a class="item entity">yellow</a>
-        <a class="item entity">green</a>
-        <a class="item entity">blue</a>
-        <a class="item entity">Indigo</a>
-        <a class="item entity">purple</a>
+        <a class="item red entity">red</a>
+        <a class="item teal entity">indigo</a>
+        <a class="item yellow entity">yellow</a>
+        <a class="item green entity">green</a>
+        <a class="item blue entity">blue</a>
+        <a class="item orange entity">orange</a>
+        <a class="item purple entity">purple</a>
     </div>
 </div>
 <div class="row">
