@@ -90,7 +90,7 @@
 
             var keyboard = new QwertyHancock({
 		         id: 'keyboard',
-		         width:  $('body').innerWidth(),
+		         width:  $('body').innerWidth()*0.97,
 		         height: 150,
 		         octaves: 7,
 		         startNote: 'A1',
@@ -112,8 +112,7 @@
                 currentPart = new Tone.Part(function (time, note) {
                     synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
                     messageDisplay(note.index + ": " + note.noteName);
-                    //fix me
-                    if ((note.index % 20) == 0) {
+                    if ((note.index % part.length) == 0) {
                         messageDisplay('part end');
                         keyboard.darkenDown(document.getElementById(lastNoteName));
                     }

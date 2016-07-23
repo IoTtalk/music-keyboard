@@ -1,0 +1,233 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes">
+
+    <script src="../js/socket_io.js" type="text/javascript"></script>
+    <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="../js/Tone.js" type="text/javascript"></script>
+    <script src="../js/semantic.js" type="text/javascript"></script>
+    <script src="../js/siriwave.js" type="text/javascript"></script>
+    <script src="../js/qwerty-hancock.js" type="text/javascript"></script>
+
+    <link href="../css/semantic.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        .ui.menu {
+            border-radius: 0px !important;
+        }
+        #content {
+            width: 95%;
+            height: 600px;
+            margin: auto;
+        }
+        #songBtn {
+            margin-top: 20px;
+            margin-bottom: 100px;
+        }
+        #keyboardContainer{
+            width: 100%;
+            height: 150px;
+            margin: auto;
+        }
+        #messageBox{
+            width: 300px;
+            height: 100px;
+            margin: auto;
+            margin-top: 50px;
+        }
+        .message{
+            text-align:center;
+        }
+        #boxes{
+            margin-left: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+    <script>
+        var socket = io.connect();
+        var room = -1;
+        var color = ['#dc143c', '#ffa500', '#ffd700', '#3cb371', '#1e90ff',
+            '#00bfff', '#9932cc'];
+        var songId = -1;
+        var partArr = [];
+        var currentPart = null;
+        var lastNoteName = null;
+
+        var messageDisplay = function(msg){
+            $('.message').html(msg);
+            console.log(msg);
+        };
+        var clearAllPart = function(){
+            if(currentPart != null && currentPart.state == "started")
+                currentPart.stop();
+            if(partArr.length != 0) {//partArr is not empty
+                for (var i = 0; i < partArr.length; i++) {
+//                    console.log(partArr[i].state);
+                    if(partArr[i].state == "started") {
+                        partArr[i].stop();
+                    }
+                }
+                partArr = [];
+            }
+        };
+
+        $(document).ready(function () {
+            //sound wave animate
+//            var siriWave = new SiriWave({
+//                container: document.getElementById('content'),
+//                width: 200,
+//                height: 100,
+//                speed: 0.09,
+//                frequency: 2,
+//                autostart: true
+//            });
+//            siriWave.start();
+//            setTimeout(function () {
+//                siriWave.stop();
+//            }, 100);
+
+            var keyboard = new QwertyHancock({
+                id: 'keyboard',
+                width:  $('body').innerWidth()*0.97,
+                height: 150,
+                octaves: 7,
+                startNote: 'A1',
+                whiteNotesColour: 'white',
+                blackNotesColour: 'black',
+                hoverColour: '#f3e939'
+            });
+            $("#keyboard").hide();
+            $("#songBtn").hide();
+            var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
+            socket.on("partObject", function (obj) {
+                console.log(obj);
+                if (songId != obj.songId && songId != -1) {
+                    messageDisplay('song switch!');
+                    clearAllPart();
+                }
+                songId = obj.songId;
+                var part = obj.songPart;
+                currentPart = new Tone.Part(function (time, note) {
+                    synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
+                    messageDisplay(note.index + ": " + note.noteName);
+                    if ((note.index % part.length) == 0) {
+                        messageDisplay('part end');
+                        keyboard.darkenDown(document.getElementById(lastNoteName));
+                    }
+                    else {
+                        if (lastNoteName != null)
+                            keyboard.darkenDown(document.getElementById(lastNoteName));
+                        keyboard.lightenUp(document.getElementById(note.noteName));
+                        lastNoteName = note.noteName;
+                    }
+                }, part);
+                currentPart.start();
+                partArr.push(currentPart);
+                Tone.Transport.start();
+                socket.emit("ack", color[room]);
+
+            });
+            socket.on("command", function (cmd) {
+                if (cmd == "chooseSong")
+                    messageDisplay('Please choose a song to play');
+
+                if(cmd == "clearAllPart")
+                    clearAllPart();
+
+                if(cmd == "waitOthers")
+                    messageDisplay('Wait others to choose');
+
+            });
+            //for choose room color
+            $('.entity').click(function () {
+                $('.entity').removeClass('active');
+                $(this).addClass('active');
+
+                if (room != -1) {
+                    if(room !=  $('.entity').index(this)) {//not click self
+                        clearAllPart();
+                    }
+                    else
+                        return;
+                }
+                socket.emit("leave", color[room]);
+                room = $('.entity').index(this);
+                socket.emit("join", color[room]);
+                $('body').css('background', color[room]);
+                $( "#keyboard" ).fadeIn( "fast");
+                $("#songBtn").fadeIn("fast");
+
+            });
+            if(room == -1)
+                messageDisplay('Please choose a color in above menu');
+
+            //for modal
+            $("#songBtn").click(function(){
+                $('.ui.modal').modal('show');
+
+            });
+            $('.inputSong').click(function () {
+                i = $('.inputSong').index(this);
+                $('.inputSong').each(function (index) {
+                    if (index != i) {
+                        $(this).attr("checked", false);
+                    }
+                });
+                var o = {songName: this.name, songId: i};
+                socket.emit("chooseSong", o);
+                $('.ui.modal').modal('hide');
+            });
+
+
+        });
+        window.onbeforeunload = function(){
+            if(room != -1)
+                socket.emit("leave", color[room]);
+        };
+
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="ui inverted seven item menu">
+        <a class="item entity">red</a>
+        <a class="item entity">orange</a>
+        <a class="item entity">yellow</a>
+        <a class="item entity">green</a>
+        <a class="item entity">blue</a>
+        <a class="item entity">Indigo</a>
+        <a class="item entity">purple</a>
+    </div>
+</div>
+<div class="row">
+    <div id="content">
+        <i class="music large icon" id="songBtn"></i>
+        <div id="keyboardContainer">
+            <div id="keyboard"></div>
+        </div>
+        <div id="messageBox">
+            <div class="ui Olive message"></div>
+        </div>
+    </div>
+</div>
+<div class="ui modal">
+    <div class="ui form" id="boxes">
+        <div class="grouped fields">
+            <label>Choose a song to play</label>
+            <% for(var i=0; i<songs.length; i++){ %>
+                <div class="field">
+                    <div class="ui  checkbox">
+                        <input type="radio" name="<%= songs[i]%>" class="inputSong">
+                        <label><%= songs[i]%></label>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

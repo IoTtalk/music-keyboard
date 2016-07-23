@@ -1,24 +1,28 @@
 var express = require("express"),
     app = express(),
     server = require("http").createServer(app),
+    pageGen = require("./pageGen.js"),
     serv_io = require("socket.io")(server),
     fs = require("fs"),
     MidiConvert = require("./MidiConvert");
 
-
 app.use(express.static("./webapp"));
 
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + '/webapp/html/index.html');
+    //res.sendFile(__dirname + '/webapp/html/index.html');
+    pageGen.indexPage(req,res);
 });
 app.get("/chooseSong", function (req, res) {
-    res.sendFile(__dirname + '/webapp/html/chooseSong.html');
+    //res.sendFile(__dirname + '/webapp/html/chooseSong.html');
+    pageGen.chooseSongPage(req,res);
 });
 app.get("/toneDemo", function (req, res) {
-    res.sendFile(__dirname + '/webapp/html/toneDemo.html');
+    //res.sendFile(__dirname + '/webapp/html/toneDemo.html');
+    pageGen.toneDemoPage(req,res);
 });
 
 server.listen((process.env.PORT || 5566), '0.0.0.0');
+
 
 var color = ['#dc143c', '#ffa500', '#ffd700', '#3cb371', '#1e90ff', '#00bfff', '#9932cc'];
 var joined = Array.apply(null, Array(color.length)).map(Number.prototype.valueOf,0);
@@ -27,7 +31,7 @@ var playing = false;
 var head = 0;
 var duration = 20;
 var room = 0;
-var roomNum = 3;
+var roomNum = 2;
 var track = 0;
 
 var partition = function (len) {

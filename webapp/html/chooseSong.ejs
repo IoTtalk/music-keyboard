@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>choose song </title>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes"
+          charset="utf-8"/>
+    <script src="../js/socket_io.js" type="text/javascript"></script>
+    <script src="../js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="../js/semantic.js" type="text/javascript"></script>
+    <link href="../css/semantic.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var socket = io.connect();
+            $('.item').click(function () {
+                i = $('.item').index(this);
+                $('.item').each(function (index) {
+                    if (index != i) {
+                        $(this).attr("checked", false);
+                    }
+
+                });
+                var o = {songName: this.name, songId: i};
+                socket.emit("chooseSong", o);
+            });
+
+        })
+
+    </script>
+    <style type="text/css">
+        .form {
+            margin-left: 20px;
+
+        }
+        body{
+            background-color: lavender;
+        }
+        label{
+            background-color: #FFFAF3;
+            border-radius: 3px;
+            border-style: solid;
+            border-color: white;
+            border-width: 2px;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="ui form" id="boxes">
+    <div class="grouped  fields">
+        <label>Choose a song to play</label>
+        <% for(var i=0; i<songs.length; i++){ %>
+            <div class="field">
+                <div class="ui  checkbox">
+                    <input type="radio" name="<%= songs[i]%>" class="item">
+                    <label><%= songs[i]%></label>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+
+</body>
+</html>
