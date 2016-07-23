@@ -2,10 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="791f34f5-a063-435d-9ec7-a44884cd5890" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/webapp/html/toneDemo.ejs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/html/index.html" afterPath="$PROJECT_DIR$/webapp/html/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server.js" afterPath="$PROJECT_DIR$/server.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/Buddha.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/bee.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/canon.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/canon2.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/detective.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/detective_2.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/donkey.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/doraemon.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/dragonballz.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/epyy.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/happy.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/londonbridge.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/slamdunk.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/slamdunk_2.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/spiritedaway.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/star.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/titanic.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/totoro.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/totoro_2.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/twotiger.mid" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/midi/wedding.mid" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/html/index.ejs" afterPath="$PROJECT_DIR$/webapp/html/index.ejs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webapp/html/toneDemo.ejs" afterPath="$PROJECT_DIR$/webapp/html/toneDemo.ejs" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="sound_talk.iws" />
@@ -30,11 +49,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0256411" vertical-offset="0" max-vertical-offset="3912">
-              <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3912">
+              <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -43,8 +62,28 @@
       <file leaf-file-name="index.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/webapp/html/index.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.3636365" vertical-offset="4797" max-vertical-offset="5712">
-              <caret line="210" column="48" selection-start-line="210" selection-start-column="48" selection-end-line="210" selection-end-column="48" />
+            <state vertical-scroll-proportion="-2.1818182" vertical-offset="0" max-vertical-offset="5736">
+              <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="toneDemo.ejs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/webapp/html/toneDemo.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3449692" vertical-offset="0" max-vertical-offset="2304">
+              <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chooseSong.ejs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webapp/html/chooseSong.ejs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.6363637" vertical-offset="0" max-vertical-offset="1680">
+              <caret line="5" column="27" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -53,8 +92,8 @@
       <file leaf-file-name="pageGen.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pageGen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2376">
-              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="2376">
+              <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -75,10 +114,10 @@
         <option value="$PROJECT_DIR$/webapp/html/index.html" />
         <option value="$PROJECT_DIR$/webapp/html/chooseSong.ejs" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/webapp/html/toneDemo.ejs" />
+        <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/pageGen.js" />
         <option value="$PROJECT_DIR$/webapp/html/index.ejs" />
-        <option value="$PROJECT_DIR$/server.js" />
+        <option value="$PROJECT_DIR$/webapp/html/toneDemo.ejs" />
       </list>
     </option>
   </component>
@@ -362,7 +401,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18322763" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39808482" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12259615" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34134614" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32968536" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -513,14 +552,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/html/chooseSong.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.50259066" vertical-offset="1101" max-vertical-offset="1680">
-          <caret line="58" column="15" selection-start-line="51" selection-start-column="8" selection-end-line="58" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webapp/html/chooseSong.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.50259066" vertical-offset="3387" max-vertical-offset="4968">
@@ -539,34 +570,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/html/toneDemo.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.090909" vertical-offset="1653" max-vertical-offset="2280">
-          <caret line="80" column="51" selection-start-line="80" selection-start-column="51" selection-end-line="80" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pageGen.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2376">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/webapp/html/index.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.3636365" vertical-offset="4797" max-vertical-offset="5712">
-          <caret line="210" column="48" selection-start-line="210" selection-start-column="48" selection-end-line="210" selection-end-column="48" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="2376">
+          <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0256411" vertical-offset="0" max-vertical-offset="3912">
-          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3912">
+          <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/html/chooseSong.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.6363637" vertical-offset="0" max-vertical-offset="1680">
+          <caret line="5" column="27" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/html/index.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.1818182" vertical-offset="0" max-vertical-offset="5736">
+          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webapp/html/toneDemo.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3449692" vertical-offset="0" max-vertical-offset="2304">
+          <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
           <folding />
         </state>
       </provider>
