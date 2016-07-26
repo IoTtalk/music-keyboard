@@ -115,9 +115,11 @@
                 songId = obj.songId;
                 var part = obj.songPart;
                 currentPart = new Tone.Part(function (time, note) {
+                    $('body').css('background', color[room]);
                     synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
                     messageDisplay(note.index + ": " + note.noteName);
                     if ((note.index % part.length) == 0) {
+                        $('body').css('background', "#000000");
                         messageDisplay('part end');
                         keyboard.darkenDown(document.getElementById(lastNoteName));
                     }

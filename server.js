@@ -32,7 +32,7 @@ var playing = false;
 var head = 0;
 var duration = 20;
 var room = 0;
-var roomNum = 7;
+var roomNum = 2;
 var track = 0;
 
 var partition = function (len) {
@@ -106,7 +106,7 @@ serv_io.sockets.on('connection', function (socket) {
             for (var i = 1; i <= part.length; i++)
                 part[i-1].index = i;
             song = {songPart: part, songId: songObject.songId};
-            //console.log(song);
+            console.log(part);
             if (allIn()) {
                 sendNotes();
             }
