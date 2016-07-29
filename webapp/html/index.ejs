@@ -95,7 +95,6 @@
             var keyboard = new QwertyHancock({
                 id: 'keyboard',
                 width:  $('body').innerWidth()*0.97,
-//                height: 150,
                 height: ($('body').innerWidth()*0.97)/8.3,
                 octaves: 7,
                 startNote: 'A1',
@@ -114,12 +113,16 @@
                 }
                 songId = obj.songId;
                 var part = obj.songPart;
+                var lastNotePlayed = false;//in case of the last note ended before others in part
                 currentPart = new Tone.Part(function (time, note) {
-                    $('body').css('background', color[room]);
+                    if(!lastNotePlayed) {
+                        $('body').css('background', color[room]);
+                        messageDisplay(note.index + ": " + note.noteName);
+                    }
                     synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
-                    messageDisplay(note.index + ": " + note.noteName);
                     if ((note.index % part.length) == 0) {
                         $('body').css('background', "#000000");
+                        lastNotePlayed = true;
                         messageDisplay('part end');
                         keyboard.darkenDown(document.getElementById(lastNoteName));
                     }
@@ -179,7 +182,7 @@
                 i = $('.inputSong').index(this);
                 $('.inputSong').each(function (index) {
                     if (index != i) {
-                        $(this).attr("checked", false);
+                        $(this).prop("checked", false);
                     }
                 });
                 var o = {songName: this.name, songId: i};
@@ -193,11 +196,19 @@
             if(room != -1)
                 socket.emit("leave", color[room]);
         };
-        //fix me
-//        $( window ).resize(function() {
-//            keyboard.width = $('body').innerWidth()*0.97;
-//            keyboard.height = ($('body').innerWidth()*0.97)/8.3;
-//        });
+        $( window ).resize(function() {
+            $("#keyboard").empty();
+            keyboard = new QwertyHancock({
+                id: 'keyboard',
+                width:  $('body').innerWidth()*0.97,
+                height: ($('body').innerWidth()*0.97)/8.3,
+                octaves: 7,
+                startNote: 'A1',
+                whiteNotesColour: 'white',
+                blackNotesColour: 'black',
+                hoverColour: '#f3e939'
+            });
+        });
     </script>
 </head>
 <body>

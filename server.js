@@ -38,7 +38,25 @@ var track = 0;
 var partition = function (len) {
     var r;
     if (head < len) {
-        if (head + 20 < len) {
+        if (head + duration < len) {
+            r = {"start": head, "end": head + duration};
+            head += duration;
+        }
+        else {
+            r = {"start": head, "end": len};
+            head = len;
+        }
+        console.log(r);
+        return r;
+    }
+    else {
+        return null;
+    }
+};
+var partition = function (len) {
+    var r;
+    if (head < len) {
+        if (head + duration < len) {
             r = {"start": head, "end": head + duration};
             head += duration;
         }
@@ -75,6 +93,12 @@ var reset = function () {
     room = 0;
     song = null;
 };
+var partPreprocessing = function(part){
+    //add unique id for each note in part
+    for (var i = 1; i <= part.length; i++)
+        part[i-1].index = i;
+    return part;
+};
 var allIn = function () {
     for (var i = 0; i < roomNum; i++)
         if (joined[i] == 0)
@@ -87,7 +111,7 @@ serv_io.sockets.on('connection', function (socket) {
     socket.on('midi', function (songName) {
         fs.readFile("midi/" + songName + ".mid", "binary", function (err, data) {
             if (!err) {
-                var part = MidiConvert.parseParts(data)[0];
+                var part = MidiConvert.parseParts(data)[track];
                 serv_io.sockets.emit('midi', part);
             } else {
                 console.log(err)
@@ -101,12 +125,11 @@ serv_io.sockets.on('connection', function (socket) {
                 return
             }
             reset();
+            //console.log(data);
             var part = MidiConvert.parseParts(data)[track];
-            //add unique id for each note in part
-            for (var i = 1; i <= part.length; i++)
-                part[i-1].index = i;
+            part = partPreprocessing(part);
             song = {songPart: part, songId: songObject.songId};
-            console.log(part);
+            //console.log(part);
             if (allIn()) {
                 sendNotes();
             }
