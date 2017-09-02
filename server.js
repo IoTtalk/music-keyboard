@@ -107,7 +107,6 @@ var allIn = function () {
 };
 serv_io.sockets.on('connection', function (socket) {
 
-
     socket.on('midi', function (songName) {
         fs.readFile("midi/" + songName + ".mid", "binary", function (err, data) {
             if (!err) {
@@ -172,7 +171,6 @@ serv_io.sockets.on('connection', function (socket) {
             sendNotes();
         }
     });
-
 });
 
 

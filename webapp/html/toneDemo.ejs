@@ -43,11 +43,17 @@
                 console.log(part);
                 if (pianoPart != null)
                     pianoPart.stop();
+
+                var p = part.slice(0,10);
+                
+                
                 pianoPart = new Tone.Part(
                         function (time, note) {
+                            console.log(note.noteName);
                             synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
-                        }, part).start();
+                        }, p).start();
                 Tone.Transport.start();
+
             });
 
         });

@@ -49,7 +49,6 @@
 
     </style>
     <script>
-
         var socket = io.connect();
         var room = -1;
         var color = ['#dc143c', '#00bfff', '#ffd700', '#3cb371', '#1e90ff',
@@ -76,7 +75,13 @@
                 partArr = [];
             }
         };
-
+        var notePreProcess = function(part){
+            var offset = parseInt(part[0].time);
+            for(var i = 0; i < part.length; i++){
+                part[i].time = (parseInt(part[i].time) - offset)+"i";
+                // console.log(part[i].time);
+            }
+        }
         $(document).ready(function () {
 
             //sound wave animate
@@ -106,7 +111,7 @@
             $("#songBtn").hide();
             var synth = new Tone.PolySynth(6, Tone.Synth).toMaster();
             socket.on("partObject", function (obj) {
-                console.log(obj);
+                // console.log(obj);
                 if (songId != obj.songId && songId != -1) {
                     messageDisplay('song switch!');
                     clearAllPart();
@@ -114,17 +119,22 @@
                 songId = obj.songId;
                 var part = obj.songPart;
                 var lastNotePlayed = false;//in case of the last note ended before others in part
+                notePreProcess(part);
+                // console.log(part);
                 currentPart = new Tone.Part(function (time, note) {
                     if(!lastNotePlayed) {
                         $('body').css('background', color[room]);
-                        messageDisplay(note.index + ": " + note.noteName);
+                        // messageDisplay(note.index + ": " + note.noteName);
                     }
                     synth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
                     if ((note.index % part.length) == 0) {
                         $('body').css('background', "#000000");
                         lastNotePlayed = true;
-                        messageDisplay('part end');
+                        // messageDisplay('part end');
                         keyboard.darkenDown(document.getElementById(lastNoteName));
+                        socket.emit("ack", color[room]);
+                        Tone.Transport.stop();
+                        currentPart.stop();
                     }
                     else {
                         if (lastNoteName != null)
@@ -134,9 +144,9 @@
                     }
                 }, part);
                 currentPart.start();
-                partArr.push(currentPart);
+                //partArr.push(currentPart);
                 Tone.Transport.start();
-                socket.emit("ack", color[room]);
+                // socket.emit("ack", color[room]);
 
             });
             socket.on("command", function (cmd) {
@@ -209,6 +219,7 @@
                 hoverColour: '#f3e939'
             });
         });
+
     </script>
 </head>
 <body>
